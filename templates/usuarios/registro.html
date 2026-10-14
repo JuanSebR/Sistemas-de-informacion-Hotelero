@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro de Huéspedes | Hotel Eclipse{% endblock %}
+
+{% block content %}
+<div class="container d-flex flex-grow-1 align-items-center justify-content-center py-5">
+    <div class="row w-100 justify-content-center">
+        <div class="col-12 col-sm-10 col-md-9 col-lg-7 col-xl-6">
+            <!-- Tarjeta de Registro Hotel Eclipse -->
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white">
+                <!-- Encabezado de la Tarjeta -->
+                <div class="card-header border-0 bg-transparent text-center pt-5 pb-2 px-4">
+                    <div class="mb-3 d-inline-flex align-items-center justify-content-center">
+                        <div class="p-3 rounded-circle" style="background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(10, 14, 23, 0.05) 100%); border: 1px solid rgba(217, 119, 6, 0.2);">
+                            <i class="bi bi-person-plus-fill text-warning fs-2"></i>
+                        </div>
+                    </div>
+                    <span class="text-uppercase small fw-bold text-warning-emphasis d-block brand-font" style="letter-spacing: 0.15em;">HOTEL ECLIPSE</span>
+                    <h2 class="h4 fw-bold text-dark mt-1 mb-1">Registro de Huéspedes</h2>
+                    <p class="text-muted small mb-0">Crea tu cuenta para disfrutar de una estancia exclusiva y personalizada</p>
+                </div>
+
+                <div class="card-body px-4 px-md-5 pt-3 pb-5">
+                    <form method="post" action="{% url 'registro' %}" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger border-0 rounded-3 p-3 small mb-4 d-flex align-items-start">
+                                <i class="bi bi-exclamation-triangle-fill text-danger me-2 mt-0.5"></i>
+                                <div>
+                                    {% for error in form.non_field_errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Fila Nombre y Apellido -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.first_name.id_for_label }}" class="form-label small fw-semibold text-secondary">
+                                    {{ form.first_name.label }} <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted rounded-start-3 px-3">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <input type="text" 
+                                           name="{{ form.first_name.name }}" 
+                                           id="{{ form.first_name.id_for_label }}" 
+                                           class="form-control bg-light border-start-0 rounded-end-3 py-2 {% if form.first_name.errors %}is-invalid{% endif %}" 
+                                           placeholder="Ej. Juan" 
+                                           value="{{ form.first_name.value|default:'' }}" 
+                                           required>
+                                </div>
+                                {% if form.first_name.errors %}
+                                    <div class="text-danger small mt-1 ps-1">
+                                        {% for error in form.first_name.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.last_name.id_for_label }}" class="form-label small fw-semibold text-secondary">
+                                    {{ form.last_name.label }} <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted rounded-start-3 px-3">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <input type="text" 
+                                           name="{{ form.last_name.name }}" 
+                                           id="{{ form.last_name.id_for_label }}" 
+                                           class="form-control bg-light border-start-0 rounded-end-3 py-2 {% if form.last_name.errors %}is-invalid{% endif %}" 
+                                           placeholder="Ej. Pérez" 
+                                           value="{{ form.last_name.value|default:'' }}" 
+                                           required>
+                                </div>
+                                {% if form.last_name.errors %}
+                                    <div class="text-danger small mt-1 ps-1">
+                                        {% for error in form.last_name.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Nombre de Usuario -->
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label small fw-semibold text-secondary">
+                                {{ form.username.label }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted rounded-start-3 px-3">
+                                    <i class="bi bi-at"></i>
+                                </span>
+                                <input type="text" 
+                                       name="{{ form.username.name }}" 
+                                       id="{{ form.username.id_for_label }}" 
+                                       class="form-control bg-light border-start-0 rounded-end-3 py-2 {% if form.username.errors %}is-invalid{% endif %}" 
+                                       placeholder="Elige un nombre de usuario" 
+                                       value="{{ form.username.value|default:'' }}" 
+                                       required>
+                            </div>
+                            {% if form.username.help_text %}
+                                <div class="form-text text-muted small mt-1 ps-1">{{ form.username.help_text }}</div>
+                            {% endif %}
+                            {% if form.username.errors %}
+                                <div class="text-danger small mt-1 ps-1">
+                                    {% for error in form.username.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Correo Electrónico -->
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label small fw-semibold text-secondary">
+                                {{ form.email.label }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted rounded-start-3 px-3">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input type="email" 
+                                       name="{{ form.email.name }}" 
+                                       id="{{ form.email.id_for_label }}" 
+                                       class="form-control bg-light border-start-0 rounded-end-3 py-2 {% if form.email.errors %}is-invalid{% endif %}" 
+                                       placeholder="huesped@ejemplo.com" 
+                                       value="{{ form.email.value|default:'' }}" 
+                                       required>
+                            </div>
+                            {% if form.email.errors %}
+                                <div class="text-danger small mt-1 ps-1">
+                                    {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Contraseñas -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="{{ form.password1.id_for_label }}" class="form-label small fw-semibold text-secondary">
+                                    {{ form.password1.label }} <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted rounded-start-3 px-3">
+                                        <i class="bi bi-key"></i>
+                                    </span>
+                                    <input type="password" 
+                                           name="{{ form.password1.name }}" 
+                                           id="{{ form.password1.id_for_label }}" 
+                                           class="form-control bg-light border-start-0 rounded-end-3 py-2 {% if form.password1.errors %}is-invalid{% endif %}" 
+                                           placeholder="••••••••" 
+                                           required>
+                                </div>
+                                {% if form.password1.errors %}
+                                    <div class="text-danger small mt-1 ps-1">
+                                        {% for error in form.password1.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.password2.id_for_label }}" class="form-label small fw-semibold text-secondary">
+                                    {{ form.password2.label }} <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted rounded-start-3 px-3">
+                                        <i class="bi bi-shield-check"></i>
+                                    </span>
+                                    <input type="password" 
+                                           name="{{ form.password2.name }}" 
+                                           id="{{ form.password2.id_for_label }}" 
+                                           class="form-control bg-light border-start-0 rounded-end-3 py-2 {% if form.password2.errors %}is-invalid{% endif %}" 
+                                           placeholder="••••••••" 
+                                           required>
+                                </div>
+                                {% if form.password2.errors %}
+                                    <div class="text-danger small mt-1 ps-1">
+                                        {% for error in form.password2.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Botón de Registro Principal -->
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-eclipse-primary py-2.5 rounded-3 fw-bold fs-6">
+                                <i class="bi bi-stars me-2"></i> Crear Mi Cuenta
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Enlace a Login -->
+                    <div class="text-center pt-3 border-top border-light-subtle">
+                        <p class="text-muted small mb-0">
+                            ¿Ya tienes una cuenta en Hotel Eclipse? 
+                            <a href="{% url 'login' %}" class="fw-bold text-warning-emphasis text-decoration-none d-inline-block mt-1">
+                                Iniciar Sesión <i class="bi bi-arrow-right-short"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marca de confianza / Nota inferior -->
+            <div class="text-center mt-3 text-muted small">
+                <i class="bi bi-check2-circle text-success me-1"></i> Registro confidencial &bull; Acceso inmediato como Cliente
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
